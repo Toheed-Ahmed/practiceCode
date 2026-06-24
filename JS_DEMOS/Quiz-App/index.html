@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevQuiz // Master the Frontend</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="quiz-container">
+    <header class="quiz-header">
+      <div class="brand">
+        <span class="brand-icon">🚀</span>
+        <h1>DevQuiz</h1>
+      </div>
+      <div id="quiz-progress-panel">
+        <div class="progress-meta">
+          <span id="question-counter">Question 1 of 10</span>
+          <span id="score-counter">Score: 0</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progress-bar-fill" style="width: 0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="quiz-card" id="quiz-card">
+      <div id="start-screen" class="screen active">
+        <h2>Ready to test your skills?</h2>
+        <p>Challenge yourself with 10 frontend engineering and core computer science questions. Aim for the top tier!</p>
+        <button id="start-btn" class="btn btn-primary">Start Quiz</button>
+      </div>
+
+      <div id="question-screen" class="screen">
+        <h3 id="question-text" class="question-text">Question text goes here?</h3>
+        <div id="options-container" class="options-container">
+          </div>
+        <div class="screen-footer">
+          <p id="feedback-message" class="feedback-message"></p>
+          <button id="next-btn" class="btn btn-primary hidden">Next Question</button>
+        </div>
+      </div>
+
+      <div id="result-screen" class="screen">
+        <div class="result-icon" id="result-icon">🏆</div>
+        <h2 id="result-title">Quiz Completed!</h2>
+        <p id="result-score-text" class="result-score-text">You scored 0 out of 10</p>
+        <p id="result-motivation" class="result-motivation">Motivational text goes here.</p>
+        <button id="restart-btn" class="btn btn-secondary">Try Again</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

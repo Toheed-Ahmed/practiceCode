@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow // Smart Task Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="notification-container" class="notification-container"></div>
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <h1>TaskFlow</h1>
+      </div>
+      <p class="subtitle">Manage your daily workflow efficiently.</p>
+      
+      <div class="dashboard-card">
+        <div class="progress-info">
+          <span>Task Progress</span>
+          <span id="progress-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="stats-counter">
+          <span id="stats-count">0 of 0 tasks completed</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="task-form-section">
+        <form id="task-form" autocomplete="off">
+          <input type="hidden" id="edit-task-id">
+          <div class="form-group">
+            <input type="text" id="task-input" placeholder="What needs to be done?" required maxlength="80">
+          </div>
+          <div class="form-actions">
+            <div class="select-wrapper">
+              <select id="priority-select" aria-label="Task Priority">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+            <button type="submit" id="submit-btn" class="btn btn-primary">Add Task</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="filter-section">
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Active</button>
+          <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+      </section>
+
+      <section class="tasks-container">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-icon">☕</div>
+          <h3>All caught up!</h3>
+          <p>No tasks found. Relax, or add a new assignment to kickstart your day.</p>
+        </div>
+
+        <ul id="task-list" class="task-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

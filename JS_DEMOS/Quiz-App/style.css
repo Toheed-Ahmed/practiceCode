@@ -1,0 +1,280 @@
+
+:root {
+  --bg-gradient: linear-gradient(135deg, #090d16 0%, #111827 100%);
+  --card-bg: rgba(31, 41, 55, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.04);
+  
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --success: #10b981;
+  --error: #ef4444;
+  
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+/* ==========================================================================
+   2. LAYOUT & CONTAINERS
+   ========================================================================== */
+.quiz-container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quiz-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+}
+
+.brand h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(to right, #fff, var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Progress HUD */
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar-bg {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  height: 6px;
+  overflow: hidden;
+}
+
+#progress-bar-fill {
+  background: linear-gradient(90deg, #6366f1, var(--primary));
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* ==========================================================================
+   3. CARD & SCREENS MANAGEMENT
+   ========================================================================== */
+.quiz-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.screen.active {
+  display: flex;
+  animation: fadeIn 0.35s ease-out;
+}
+
+/* Question Content */
+.question-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+/* ==========================================================================
+   4. BUTTONS & INTERACTIVE ELEMENTS
+   ========================================================================== */
+.btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Choice Buttons */
+.option-btn {
+  background: var(--glass-highlight);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
+}
+
+/* Answer States */
+.option-btn.correct {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: var(--success) !important;
+  color: #d1fae5;
+  font-weight: 600;
+}
+
+.option-btn.incorrect {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: var(--error) !important;
+  color: #fee2e2;
+}
+
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   5. SCREEN FOOTER & STATUSES
+   ========================================================================== */
+.screen-footer {
+  margin-top: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+}
+
+.feedback-message {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.feedback-message.correct-text { color: var(--success); }
+.feedback-message.incorrect-text { color: var(--error); }
+
+/* Result Layout */
+#result-screen {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.result-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.result-score-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.result-motivation {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 400px;
+  margin-bottom: 1rem;
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsiveness Rules */
+@media (max-width: 480px) {
+  body { padding: 1rem; }
+  .quiz-card { padding: 1.5rem 1.25rem; }
+  .question-text { font-size: 1.1rem; }
+  .screen-footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  #next-btn { width: 100%; }
+}

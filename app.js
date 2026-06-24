@@ -14,3 +14,10 @@ but not recommended to use var because it can lead to bugs and confusion
 
 // console.table is used to print the data in table format
 console.table([accountNumber, accountHolderName])
+
+
+let myName="Toheed Khan"
+let fee=2000.0011
+console.log(typeof myName + " "+ typeof fee)
+console.log("My name is "+myName+" and my fee is "+fee)
+

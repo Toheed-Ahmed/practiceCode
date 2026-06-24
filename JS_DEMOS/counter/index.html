@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chronos // Utility Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">⏱️</span>
+        <h1>Chronos</h1>
+      </div>
+      <nav class="tab-navigation">
+        <button class="tab-btn active" data-target="counter-module">Counter</button>
+        <button class="tab-btn" data-target="stopwatch-module">Stopwatch</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-container">
+      
+      <section id="counter-module" class="module-pane active">
+        <div class="display-card">
+          <div id="counter-display" class="large-numerical-display animate-pulse">0</div>
+          
+          <div class="config-toggle-strip">
+            <label class="toggle-switch">
+              <input type="checkbox" id="prevent-negative-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Prevent Negative Values</span>
+          </div>
+        </div>
+
+        <div class="control-grid-layout">
+          <button id="counter-decrement" class="btn btn-secondary" aria-label="Decrement counter">- Decrement</button>
+          <button id="counter-reset" class="btn btn-danger" aria-label="Reset counter">Reset</button>
+          <button id="counter-increment" class="btn btn-primary" aria-label="Increment counter">+ Increment</button>
+        </div>
+      </section>
+
+      <section id="stopwatch-module" class="module-pane">
+        <div class="display-card">
+          <div id="stopwatch-display" class="large-numerical-display mono-font">00:00:00<span class="ms-label">.00</span></div>
+        </div>
+
+        <div class="control-flex-strip">
+          <button id="sw-start" class="btn btn-primary">Start</button>
+          <button id="sw-pause" class="btn btn-secondary hidden">Pause</button>
+          <button id="sw-resume" class="btn btn-primary hidden">Resume</button>
+          <button id="sw-lap" class="btn btn-secondary" disabled>Lap</button>
+          <button id="sw-reset" class="btn btn-danger">Reset</button>
+        </div>
+
+        <div class="laps-subpanel">
+          <div class="laps-header">
+            <h3>Recorded Laps</h3>
+            <button id="clear-laps-btn" class="text-link-btn hidden">Clear All</button>
+          </div>
+          <div class="laps-list-wrapper">
+            <div id="laps-empty" class="laps-empty-state">No recorded splits. Press Lap while stopwatch runs.</div>
+            <ul id="laps-list" class="laps-list"></ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
