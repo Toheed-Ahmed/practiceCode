@@ -3,58 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevQuiz // Master the Frontend</title>
+  <title>DevQuiz Core // Engineering Assessment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="quiz-container">
-    <header class="quiz-header">
-      <div class="brand">
-        <span class="brand-icon">🚀</span>
-        <h1>DevQuiz</h1>
-      </div>
-      <div id="quiz-progress-panel">
-        <div class="progress-meta">
-          <span id="question-counter">Question 1 of 10</span>
-          <span id="score-counter">Score: 0</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div id="progress-bar-fill" style="width: 0%"></div>
-        </div>
-      </div>
-    </header>
+  <div id="aria-announcer" class="sr-only" aria-live="polite"></div>
 
-    <main class="quiz-card" id="quiz-card">
-      <div id="start-screen" class="screen active">
-        <h2>Ready to test your skills?</h2>
-        <p>Challenge yourself with 10 frontend engineering and core computer science questions. Aim for the top tier!</p>
-        <button id="start-btn" class="btn btn-primary">Start Quiz</button>
-      </div>
+  <div class="app-stage">
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
 
-      <div id="question-screen" class="screen">
-        <h3 id="question-text" class="question-text">Question text goes here?</h3>
-        <div id="options-container" class="options-container">
+    <div class="quiz-window">
+      <header class="quiz-hud">
+        <div class="hud-brand">
+          <div class="logo-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           </div>
-        <div class="screen-footer">
-          <p id="feedback-message" class="feedback-message"></p>
-          <button id="next-btn" class="btn btn-primary hidden">Next Question</button>
+          <span class="logo-text">DevQuiz<span class="text-accent">.io</span></span>
         </div>
+        
+        <div id="hud-metrics" class="hud-metrics hidden">
+          <div class="metric-group">
+            <span class="metric-label">PROGRESS</span>
+            <span id="hud-counter" class="metric-value">01/10</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-group">
+            <span class="metric-label">SCORE</span>
+            <span id="hud-score" class="metric-value accent">000</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="progress-track-wrapper">
+        <progress id="quiz-progress" value="0" max="100"></progress>
       </div>
 
-      <div id="result-screen" class="screen">
-        <div class="result-icon" id="result-icon">🏆</div>
-        <h2 id="result-title">Quiz Completed!</h2>
-        <p id="result-score-text" class="result-score-text">You scored 0 out of 10</p>
-        <p id="result-motivation" class="result-motivation">Motivational text goes here.</p>
-        <button id="restart-btn" class="btn btn-secondary">Try Again</button>
-      </div>
-    </main>
+      <main class="quiz-viewport" id="quiz-viewport">
+        
+        <section id="start-screen" class="view-panel active" aria-labelledby="start-title">
+          <div class="hero-graphic">⚡</div>
+          <h2 id="start-title" class="view-title">Master the Frontend Core Matrix</h2>
+          <p class="view-description">Accelerate your engineering placement metrics. Complete a 10-stage evaluation map parsing systems architecture, ECMAScript compilers, engine runtimes, and tactical document rendering flows.</p>
+          <div class="cta-wrapper">
+            <button id="start-btn" class="btn btn-action">
+              <span>Initialize System Protocol</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+        </section>
+
+        <form id="question-screen" class="view-panel" onsubmit="event.preventDefault();">
+          <fieldset class="interactive-fieldset">
+            <legend id="question-text" class="question-prompt">Parsing system variables...</legend>
+            <div id="options-container" class="options-matrix">
+              </div>
+          </fieldset>
+
+          <footer class="viewport-footer">
+            <div id="feedback-tray" class="feedback-tray">
+              <span id="feedback-icon" class="feedback-icon"></span>
+              <p id="feedback-message" class="feedback-text" aria-live="polite"></p>
+            </div>
+            <button id="next-btn" type="button" class="btn btn-next hidden">
+              <span>Advance Phase</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </footer>
+        </form>
+
+        <section id="result-screen" class="view-panel summary-layout" aria-labelledby="result-title">
+          <div id="result-badge-container" class="badge-emitter">
+            <div id="result-icon" class="metric-badge">🏆</div>
+          </div>
+          <h2 id="result-title" class="view-title">Evaluation Finalized</h2>
+          
+          <div class="score-data-plate">
+            <span class="plate-title">ACCURACY METRIC</span>
+            <div id="result-score-text" class="plate-score">00 / 10</div>
+          </div>
+
+          <p id="result-motivation" class="view-description text-center">Formulating runtime diagnostics data summary...</p>
+          
+          <div class="cta-wrapper">
+            <button id="restart-btn" type="button" class="btn btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+              <span>Recalibrate Terminal</span>
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

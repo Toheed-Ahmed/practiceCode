@@ -1,208 +1,253 @@
 
-// --- DATA STRUCTURE: QUESTION MATRIX ---
-const quizData = [
-  {
-    question: "Which of the following is NOT a primitive data type in JavaScript?",
-    options: ["String", "Boolean", "Object", "Undefined"],
-    correct: 2
-  },
-  {
-    question: "What is the primary function of the array method '.map()'?",
-    options: [
-      "Mutates the original array data directly", 
-      "Creates a new array populated with results of a calling function", 
-      "Filters elements out matching structural criteria", 
-      "Checks if at least one item satisfies a conditional check"
-    ],
-    correct: 1
-  },
-  {
-    question: "Which HTML5 element is structurally used to wrap tangential, peripheral sidebar content?",
-    options: ["<section>", "<aside>", "<article>", "<nav>"],
-    correct: 1
-  },
-  {
-    question: "In CSS Flexbox, which property controls alignment along the main axis?",
-    options: ["align-items", "align-content", "justify-content", "flex-direction"],
-    correct: 2
-  },
-  {
-    question: "What is the behavioral output of evaluated expression: typeof null?",
-    options: ["'null'", "'undefined'", "'string'", "'object'"],
-    correct: 3
-  },
-  {
-    question: "Which keyword permits declaring variables scoped exclusively to the enclosing block in ES6?",
-    options: ["var", "let", "global", "constant"],
-    correct: 1
-  },
-  {
-    question: "What mechanism allows an inner function access to outer enclosing scope scopes even after execution completes?",
-    options: ["Hoisting", "Closures", "Prototypes", "Shadowing"],
-    correct: 1
-  },
-  {
-    question: "Which HTTP status code represents a resource modification request that successfully authenticated but was forbidden by permissions?",
-    options: ["400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found"],
-    correct: 2
-  },
-  {
-    question: "How do you prevent a form submission event from forcing a complete browser webpage reload?",
-    options: ["event.stopImmediatePropagation()", "event.preventDefault()", "return false;", "event.stopPropagation()"],
-    correct: 1
-  },
-  {
-    question: "Which mechanism allows you to execute operations asynchronously without blocking the primary thread execution stack?",
-    options: ["Promises & Async/Await", "For...of Loops", "JSON Serialization", "Math.random Evaluations"],
-    correct: 0
-  }
-];
+document.addEventListener('DOMContentLoaded', () => {
 
-// --- APPLICATION STATE ---
-let currentQuestionIndex = 0;
-let score = 0;
-let answerSelected = false;
+  // --- COMPILER QUESTION DATA ARCHITECTURE ---
+  const quizData = [
+    {
+      question: "Which of the following is NOT a primitive data type in JavaScript?",
+      options: ["String", "Boolean", "Object", "Undefined"],
+      correct: 2
+    },
+    {
+      question: "What is the primary function of the array method '.map()'?",
+      options: [
+        "Mutates the original array data directly", 
+        "Creates a new array populated with results of a calling function", 
+        "Filters elements out matching structural criteria", 
+        "Checks if at least one item satisfies a conditional check"
+      ],
+      correct: 1
+    },
+    {
+      question: "Which HTML5 element is structurally used to wrap tangential, peripheral sidebar content?",
+      options: ["<section>", "<aside>", "<article>", "<nav>"],
+      correct: 1
+    },
+    {
+      question: "In CSS Flexbox, which property controls alignment along the main axis?",
+      options: ["align-items", "align-content", "justify-content", "flex-direction"],
+      correct: 2
+    },
+    {
+      question: "What is the behavioral output of evaluated expression: typeof null?",
+      options: ["'null'", "'undefined'", "'string'", "'object'"],
+      correct: 3
+    },
+    {
+      question: "Which keyword permits declaring variables scoped exclusively to the enclosing block in ES6?",
+      options: ["var", "let", "global", "constant"],
+      correct: 1
+    },
+    {
+      question: "What mechanism allows an inner function access to outer enclosing scope scopes even after execution completes?",
+      options: ["Hoisting", "Closures", "Prototypes", "Shadowing"],
+      correct: 1
+    },
+    {
+      question: "Which HTTP status code represents a resource modification request that successfully authenticated but was forbidden by permissions?",
+      options: ["400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found"],
+      correct: 2
+    },
+    {
+      question: "How do you prevent a form submission event from forcing a complete browser webpage reload?",
+      options: ["event.stopImmediatePropagation()", "event.preventDefault()", "return false;", "event.stopPropagation()"],
+      correct: 1
+    },
+    {
+      question: "Which mechanism allows you to execute operations asynchronously without blocking the primary thread execution stack?",
+      options: ["Promises & Async/Await", "For...of Loops", "JSON Serialization", "Math.random Evaluations"],
+      correct: 0
+    }
+  ];
 
-// --- DOM ELEMENTS REFERENCE HUD ---
-const startScreen = document.getElementById('start-screen');
-const questionScreen = document.getElementById('question-screen');
-const resultScreen = document.getElementById('result-screen');
+  // --- APP SYSTEM STATES ---
+  let phaseIndex = 0;
+  let metricsScore = 0;
+  let phaseLocked = false;
 
-const startBtn = document.getElementById('start-btn');
-const nextBtn = document.getElementById('next-btn');
-const restartBtn = document.getElementById('restart-btn');
-
-const questionText = document.getElementById('question-text');
-const optionsContainer = document.getElementById('options-container');
-const feedbackMessage = document.getElementById('feedback-message');
-
-const questionCounter = document.getElementById('question-counter');
-const scoreCounter = document.getElementById('score-counter');
-const progressBarFill = document.getElementById('progress-bar-fill');
-const quizProgressPanel = document.getElementById('quiz-progress-panel');
-
-const resultScoreText = document.getElementById('result-score-text');
-const resultMotivation = document.getElementById('result-motivation');
-const resultIcon = document.getElementById('result-icon');
-
-// --- APP CONTROLLER INTERACTION ACTIONS ---
-
-function initQuiz() {
-  currentQuestionIndex = 0;
-  score = 0;
-  answerSelected = false;
+  // --- DOM NODES INTERACTION HUD ---
+  const startScreen = document.getElementById('start-screen');
+  const questionScreen = document.getElementById('question-screen');
+  const resultScreen = document.getElementById('result-screen');
   
-  quizProgressPanel.style.opacity = "0.3";
-  showScreen(startScreen);
-}
-
-function startQuiz() {
-  quizProgressPanel.style.opacity = "1";
-  showScreen(questionScreen);
-  loadQuestion();
-}
-
-function loadQuestion() {
-  answerSelected = false;
-  feedbackMessage.textContent = '';
-  feedbackMessage.className = 'feedback-message';
-  nextBtn.classList.add('hidden');
-  optionsContainer.innerHTML = '';
-
-  const currentQuestion = quizData[currentQuestionIndex];
-  questionText.textContent = currentQuestion.question;
+  const startBtn = document.getElementById('start-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const restartBtn = document.getElementById('restart-btn');
   
-  // HUD update metrics
-  questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
-  scoreCounter.textContent = `Score: ${score}`;
+  const hudMetricsPanel = document.getElementById('hud-metrics');
+  const hudCounter = document.getElementById('hud-counter');
+  const hudScore = document.getElementById('hud-score');
+  const systemProgressBar = document.getElementById('quiz-progress');
   
-  const progressPercentage = (currentQuestionIndex / quizData.length) * 100;
-  progressBarFill.style.width = `${progressPercentage}%`;
+  const questionText = document.getElementById('question-text');
+  const optionsContainer = document.getElementById('options-container');
+  
+  const feedbackTray = document.getElementById('feedback-tray');
+  const feedbackIcon = document.getElementById('feedback-icon');
+  const feedbackMessage = document.getElementById('feedback-message');
+  const ariaAnnouncer = document.getElementById('aria-announcer');
 
-  // Loops through answers arrays to construct UI choices dynamically
-  currentQuestion.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.className = 'option-btn';
-    button.textContent = option;
-    button.addEventListener('click', () => handleAnswerSelection(index, button));
-    optionsContainer.appendChild(button);
-  });
-}
+  const resultScoreText = document.getElementById('result-score-text');
+  const resultMotivation = document.getElementById('result-motivation');
+  const resultIcon = document.getElementById('result-icon');
 
-function handleAnswerSelection(selectedIndex, selectedButton) {
-  if (answerSelected) return; // Prevent selection tampering post-lock
-  answerSelected = true;
+  // --- PROTOCOL CONTROLLER LOOPS ---
 
-  const currentQuestion = quizData[currentQuestionIndex];
-  const choiceButtons = optionsContainer.querySelectorAll('.option-btn');
-
-  // Freeze out options inputs completely
-  choiceButtons.forEach(btn => btn.disabled = true);
-
-  // Validate answer index selections using operational conditional structures
-  if (selectedIndex === currentQuestion.correct) {
-    score++;
-    selectedButton.classList.add('correct');
-    feedbackMessage.textContent = 'Correct Answer! 🌟';
-    feedbackMessage.classList.add('correct-text');
-  } else {
-    selectedButton.classList.add('incorrect');
-    // Highlight the missed actual true answer variant for pedagogical reinforcement
-    choiceButtons[currentQuestion.correct].classList.add('correct');
-    feedbackMessage.textContent = 'Incorrect Choice.';
-    feedbackMessage.classList.add('incorrect-text');
+  function initAppEngine() {
+    phaseIndex = 0;
+    metricsScore = 0;
+    phaseLocked = false;
+    
+    hudMetricsPanel.classList.add('hidden');
+    systemProgressBar.value = 0;
+    routeViewportDisplay(startScreen);
   }
 
-  scoreCounter.textContent = `Score: ${score}`;
-  nextBtn.classList.remove('hidden');
-}
-
-function handleNextStep() {
-  currentQuestionIndex++;
-  
-  if (currentQuestionIndex < quizData.length) {
-    loadQuestion();
-  } else {
-    evaluateFinalResults();
+  function launchEvaluation() {
+    hudMetricsPanel.classList.remove('hidden');
+    routeViewportDisplay(questionScreen);
+    compileActivePhase();
   }
-}
 
-function evaluateFinalResults() {
-  progressBarFill.style.width = '100%';
-  showScreen(resultScreen);
-  
-  resultScoreText.textContent = `You scored ${score} out of ${quizData.length}`;
-  
-  // Performance logic evaluations matching tiering levels
-  const performanceRatio = score / quizData.length;
-  
-  if (performanceRatio === 1) {
-    resultIcon.textContent = '👑';
-    resultMotivation.textContent = "Absolute perfection! You possess advanced frontend knowledge ready for top-tier challenges.";
-  } else if (performanceRatio >= 0.7) {
-    resultIcon.textContent = '🏆';
-    resultMotivation.textContent = "Great job! Strong structural core awareness. Keep building and tweaking projects.";
-  } else if (performanceRatio >= 0.5) {
-    resultIcon.textContent = '⚡';
-    resultMotivation.textContent = "Decent attempt. Review some core JavaScript definitions and try again to improve your score.";
-  } else {
-    resultIcon.textContent = '📚';
-    resultMotivation.textContent = "Keep practicing. Read documentation on execution context frameworks to build confidence.";
+  function compileActivePhase() {
+    phaseLocked = false;
+    feedbackTray.classList.remove('revealed', 'correct-state', 'incorrect-state');
+    nextBtn.classList.add('hidden');
+    optionsContainer.innerHTML = '';
+
+    const currentData = quizData[phaseIndex];
+    questionText.textContent = currentData.question;
+    
+    // Refresh Global HUD Elements
+    const localizedIndexStr = (phaseIndex + 1).toString().padStart(2, '0');
+    const totalLengthStr = quizData.length.toString().padStart(2, '0');
+    hudCounter.textContent = `${localizedIndexStr}/${totalLengthStr}`;
+    hudScore.textContent = metricsScore.toString().padStart(3, '0');
+    
+    const progressTimelineRatio = (phaseIndex / quizData.length) * 100;
+    systemProgressBar.value = progressTimelineRatio;
+
+    // Build Form Radio Selection Nodes securely
+    const documentFragment = document.createDocumentFragment();
+    
+    currentData.options.forEach((optionText, idx) => {
+      const optionWrapper = document.createElement('div');
+      optionWrapper.className = 'choice-item-wrapper';
+      
+      const uniqueInputId = `opt-${phaseIndex}-${idx}`;
+      
+      optionWrapper.innerHTML = `
+        <input type="radio" name="quiz-choice" id="${uniqueInputId}" value="${idx}" class="choice-radio-input">
+        <label for="${uniqueInputId}" class="choice-control-plate">
+          <span>${escapeStringHTML(optionText)}</span>
+        </label>
+      `;
+      
+      // Bind event listeners to label interaction components safely
+      optionWrapper.querySelector('.choice-radio-input').addEventListener('change', (e) => {
+        evaluateChoiceSubmission(idx, optionWrapper);
+      });
+      
+      documentFragment.appendChild(optionWrapper);
+    });
+    
+    optionsContainer.appendChild(documentFragment);
+    announceToScreenReader(`System phase ${phaseIndex + 1} initialized. ${currentData.question}`);
   }
-}
 
-// --- CORE UTILITY ROUTERS ---
+  function evaluateChoiceSubmission(chosenIndex, targetWrapperElement) {
+    if (phaseLocked) return;
+    phaseLocked = true;
 
-function showScreen(targetScreen) {
-  const screens = [startScreen, questionScreen, resultScreen];
-  screens.forEach(screen => screen.classList.remove('active'));
-  targetScreen.classList.add('active');
-}
+    const activeQuestion = quizData[phaseIndex];
+    const inputsList = optionsContainer.querySelectorAll('.choice-radio-input');
+    const wrapperNodes = optionsContainer.querySelectorAll('.choice-item-wrapper');
 
-// --- EVENT LISTENERS REGISTRATION ---
-startBtn.addEventListener('click', startQuiz);
-nextBtn.addEventListener('click', handleNextStep);
-restartBtn.addEventListener('click', startQuiz);
+    // Freeze inputs instantly
+    inputsList.forEach(input => input.disabled = true);
 
-// Bootstrap Runtime Application Execution Layer
-initQuiz();
+    if (chosenIndex === activeQuestion.correct) {
+      metricsScore++;
+      targetWrapperElement.classList.add('state-correct');
+      triggerFeedbackUI(true, 'Verification Complete. Correct Metric Option.');
+    } else {
+      targetWrapperElement.classList.add('state-incorrect');
+      // Highlight exact accurate option tracking values
+      wrapperNodes[activeQuestion.correct].classList.add('state-correct');
+      triggerFeedbackUI(false, 'Verification Failed. Option Parameter Mismatch.');
+    }
+
+    hudScore.textContent = metricsScore.toString().padStart(3, '0');
+    nextBtn.classList.remove('hidden');
+    nextBtn.focus();
+  }
+
+  function triggerFeedbackUI(isAccurate, messageText) {
+    feedbackTray.className = `feedback-tray revealed ${isAccurate ? 'correct-state' : 'incorrect-state'}`;
+    feedbackIcon.textContent = isAccurate ? '✓' : '✕';
+    feedbackMessage.textContent = messageText;
+    announceToScreenReader(messageText);
+  }
+
+  function progressToNextPhase() {
+    phaseIndex++;
+    if (phaseIndex < quizData.length) {
+      compileActivePhase();
+    } else {
+      buildEvaluationMetricsSummary();
+    }
+  }
+
+  function buildEvaluationMetricsSummary() {
+    systemProgressBar.value = 100;
+    routeViewportDisplay(resultScreen);
+    
+    const displayTotalStr = quizData.length.toString().padStart(2, '0');
+    const displayFinalScoreStr = metricsScore.toString().padStart(2, '0');
+    resultScoreText.textContent = `${displayFinalScoreStr} / ${displayTotalStr}`;
+    
+    const accuracyRatio = metricsScore / quizData.length;
+    
+    if (accuracyRatio === 1) {
+      resultIcon.textContent = '👑';
+      resultMotivation.textContent = "Absolute system perfection. Core architecture metrics completely verified for terminal deployment.";
+    } else if (accuracyRatio >= 0.7) {
+      resultIcon.textContent = '🏆';
+      resultMotivation.textContent = "High proficiency parameters observed. Engineering diagnostics indicate strong frontend baseline parameters.";
+    } else if (accuracyRatio >= 0.5) {
+      resultIcon.textContent = '⚡';
+      resultMotivation.textContent = "Nominal system response. Traces of core operational variations found. Codebase parameter synchronization recommended.";
+    } else {
+      resultIcon.textContent = '📚';
+      resultMotivation.textContent = "System out of bounds. Core runtime discrepancies detected. Re-evaluating foundational engine manuals is highly recommended.";
+    }
+    
+    announceToScreenReader(`Evaluation finalized. Your final accuracy metric score is ${metricsScore} out of ${quizData.length}.`);
+  }
+
+  // --- CORE SYSTEM DISPATCH ROUTERS ---
+
+  function routeViewportDisplay(activeTargetPanel) {
+    const panelsList = [startScreen, questionScreen, resultScreen];
+    panelsList.forEach(panel => panel.classList.remove('active'));
+    activeTargetPanel.classList.add('active');
+  }
+
+  function announceToScreenReader(rawMessage) {
+    ariaAnnouncer.textContent = rawMessage;
+  }
+
+  function escapeStringHTML(sourceStr) {
+    return sourceStr.replace(/[&<>'"]/g, 
+      matchedTag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[matchedTag] || matchedTag)
+    );
+  }
+
+  // --- MOTOR LIFECYCLE LISTENERS ---
+  startBtn.addEventListener('click', launchEvaluation);
+  nextBtn.addEventListener('click', progressToNextPhase);
+  restartBtn.addEventListener('click', initAppEngine);
+
+  // Initialize System Component Core
+  initAppEngine();
+});
